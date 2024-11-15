@@ -833,19 +833,19 @@ def deploy_nft(name, symbol, base_uri):
 # Function to mint an NFT
 
 # Function to mint an NFT
-def mint_nft(mint_to, uri):
+def mint_nft(mint_to, ipfs_hash):
     """
     Mint an NFT to a specified address.
 
     Args:
-        contract_address (str): Address of the NFT contract
         mint_to (str): Address to mint NFT to
+        ipfs_hash (str): IPFS hash of the NFT metadata
 
     Returns:
         str: Status message about the NFT minting
     """
     try:
-        mint_args = {"to": mint_to, "uri": uri}
+        mint_args = {"to": mint_to, "uri": "ipfs://" + ipfs_hash}
 
         mint_invocation = agent_wallet.invoke_contract(
             contract_address, "safeMint", abi, mint_args, None, None

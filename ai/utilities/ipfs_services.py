@@ -9,7 +9,6 @@ load_dotenv()
 
 url = "https://api.tatum.io/v3/ipfs"
 TATUM_API_KEY = os.getenv("TATUM_API_KEY")
-print("TATUM_API_KEY: ", TATUM_API_KEY)
 
 def extract_image_link(text):
     url_pattern = r"https?://[^\s]+"
@@ -18,6 +17,12 @@ def extract_image_link(text):
 
 
 def upload_file_to_ipfs():
+    """
+    Upload a file to IPFS and return the IPFS hash.
+
+    Returns:
+      str: IPFS hash of the uploaded file
+    """
     files = { "file": ("data.json", open("data.json", "rb"), "application/json") }
     headers = {
         "accept": "application/json",
@@ -33,10 +38,22 @@ def upload_file_to_ipfs():
     return data["ipfsHash"]
 
 def upload_data_to_ipfs(name, description, image):
+    """
+    Upload data to IPFS and return the IPFS hash.
+
+    Args:
+      name (str): Name of the NFT
+      description (str): Description of the NFT
+      image (str): URL of the image to upload
+
+    Returns:
+      str: IPFS hash of the uploaded data
+    """
+
     data = {
         "name": name,
         "description": description,
-        "image": image
+        "image": "ipfs://" + image
     }
 
     # save data to a file data.json
@@ -45,16 +62,25 @@ def upload_data_to_ipfs(name, description, image):
         
     return upload_file_to_ipfs()
 
-def get_file_from_ipfs(hash):
-    headers = {
-      "accept": "*",
-      "x-api-key": TATUM_API_KEY
-    }
+# def get_file_from_ipfs(hash):
+#     headers = {
+#       "accept": "*",
+#       "x-api-key": TATUM_API_KEY
+#     }
 
-    response = requests.get(f"{url}/{hash}", headers=headers)
-    print(response.text)
+#     response = requests.get(f"{url}/{hash}", headers=headers)
+#     print(response.text)
 
 def upload_image_to_ipfs(imageUrl):
+    """
+    Upload an image to IPFS and return the IPFS hash.
+
+    Args:
+      imageUrl (str): URL of the image to upload
+
+    Returns:
+      str: IPFS hash of the uploaded image
+    """
     extracted = extract_image_link(imageUrl)
     # Download the image and save it as a file named image.png
     response = requests.get(extracted)
@@ -74,23 +100,4 @@ def upload_image_to_ipfs(imageUrl):
     os.remove("image.png")
 
     return data["ipfsHash"]
-
-async def generate_nft_metadata(name, description,imageResult):
-    """
-    Generate NFT metadata and upload it to IPFS.
-
-    Args:
-        name (str): Name of the NFT
-        description (str): Description of the NFT
-        imageResult (str): Image URL of the NFT
-    
-    Returns:
-        Metadata IPFS hash
-    """
-    imageLink = upload_image_to_ipfs(imageResult)
-    await asyncio.sleep(1)
-    print("Image Link: ", imageLink)
-    ipfsHash = upload_data_to_ipfs(name, description, imageLink)
-    await asyncio.sleep(5)
-    return ipfsHash
 

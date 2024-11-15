@@ -15,6 +15,9 @@ def extract_image_link(text):
     match = re.search(url_pattern, text)
     return match.group(0) if match else None
 
+def remove_ipfs_prefix(text):
+    return text.replace("ipfs://", "")
+
 
 def upload_file_to_ipfs():
     """
@@ -53,7 +56,7 @@ def upload_data_to_ipfs(name, description, image):
     data = {
         "name": name,
         "description": description,
-        "image": "ipfs://" + image
+        "image": "ipfs://" + remove_ipfs_prefix(image)
     }
 
     # save data to a file data.json

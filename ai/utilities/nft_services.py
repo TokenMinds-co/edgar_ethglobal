@@ -805,6 +805,9 @@ def time_to_mint():
 
     return False
 
+def remove_ipfs_prefix(text):
+    return text.replace("ipfs://", "")
+
 
 # Function to deploy an ERC-721 NFT contract
 def deploy_nft(name, symbol, base_uri):
@@ -845,7 +848,7 @@ def mint_nft(mint_to, ipfs_hash):
         str: Status message about the NFT minting
     """
     try:
-        mint_args = {"to": mint_to, "uri": "ipfs://" + ipfs_hash}
+        mint_args = {"to": mint_to, "uri": "ipfs://" + remove_ipfs_prefix(ipfs_hash)}
 
         mint_invocation = agent_wallet.invoke_contract(
             contract_address, "safeMint", abi, mint_args, None, None

@@ -62,7 +62,7 @@ snarky = Agent(
         nft_services.time_to_mint,
         nft_services.mint_nft,
         nft_services.list_nft_to_opensea,
-        twitter_services.post_nft_on_twitter,
+        twitter_services.post_to_twitter,
         # image_services.generate_art,
     ],
 )

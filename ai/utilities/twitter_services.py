@@ -1,5 +1,5 @@
 import os
-from utilities.twitter_bot import TwitterBot
+import tweepy
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,17 +11,17 @@ TWITTER_API_SECRET = os.getenv("TWITTER_API_SECRET")
 TWITTER_ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
 TWITTER_ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 
-# Twitter Bot
-bot = TwitterBot(
+
+client = tweepy.Client(
     bearer_token=TWITTER_BEARER_TOKEN,
-    api_key=TWITTER_API_KEY,
-    api_secret=TWITTER_API_SECRET,
+    consumer_key=TWITTER_API_KEY,
+    consumer_secret=TWITTER_API_SECRET,
     access_token=TWITTER_ACCESS_TOKEN,
     access_token_secret=TWITTER_ACCESS_TOKEN_SECRET,
 )
 
 
-# Test function to post listed NFT on Twitter => LET'S US THIS ONE FOR TESTING
+# Test function to post listed NFT on Twitter => LET'S USE THIS ONE FOR TESTING
 def post_nft_on_twitter(nftName):
     """
     Market/Post NFT on X-Account
@@ -51,4 +51,11 @@ def post_to_twitter(content: str):
     Returns:
         str: Status message about the tweet
     """
-    return bot.post_tweet(content)
+    try:
+
+        tweet = client.create_tweet(text=content)
+        return f"Successfully posted tweet: {tweet.data}"
+
+    except tweepy.TweepyException as e:
+        print(f"{str(e)}")
+        return f"Error posting tweet: {str(e)}"

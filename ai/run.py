@@ -2,9 +2,8 @@ import time
 import json
 from swarm import Swarm
 from swarm.repl import run_demo_loop
-from agents import based_agent
+from agents import snarky
 from openai import OpenAI
-
 
 # this is the main loop that runs the agent in autonomous mode
 # you can modify this to change the behavior of the agent
@@ -38,79 +37,19 @@ def run_autonomous_loop(agent, interval=10):
         time.sleep(interval)
 
 
-# this is the main loop that runs the agent in two-agent mode
-# you can modify this to change the behavior of the agent
-def run_openai_conversation_loop(agent):
-    """Facilitates a conversation between an OpenAI-powered agent and the Based Agent."""
-    client = Swarm()
-    openai_client = OpenAI()
-    messages = []
-
-    print("Starting OpenAI-Based Agent conversation loop...")
-
-    # Initial prompt to start the conversation
-    openai_messages = [
-        {
-            "role": "system",
-            "content": "You are a user guiding a blockchain agent through various tasks on the Base blockchain. Engage in a conversation, suggesting actions and responding to the agent's outputs. Be creative and explore different blockchain capabilities. Options include creating tokens, transferring assets, minting NFTs, and getting balances. You're not simulating a conversation, but you will be in one yourself. Make sure you follow the rules of improv and always ask for some sort of function to occur. Be unique and interesting.",
-        },
-        {
-            "role": "user",
-            "content": "Start a conversation with the Based Agent and guide it through some blockchain tasks.",
-        },
-    ]
-
-    while True:
-        # Generate OpenAI response
-        openai_response = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo", messages=openai_messages
-        )
-
-        openai_message = openai_response.choices[0].message.content
-        print(f"\n\033[92mOpenAI Guide:\033[0m {openai_message}")
-
-        # Send OpenAI's message to Based Agent
-        messages.append({"role": "user", "content": openai_message})
-        response = client.run(agent=agent, messages=messages, stream=True)
-        response_obj = process_and_print_streaming_response(response)
-
-        # Update messages with Based Agent's response
-        messages.extend(response_obj.messages)
-
-        # Add Based Agent's response to OpenAI conversation
-        based_agent_response = (
-            response_obj.messages[-1]["content"]
-            if response_obj.messages
-            else "No response from Based Agent."
-        )
-        openai_messages.append(
-            {"role": "user", "content": f"Based Agent response: {based_agent_response}"}
-        )
-
-        # Check if user wants to continue
-        user_input = input(
-            "\nPress Enter to continue the conversation, or type 'exit' to end: "
-        )
-        if user_input.lower() == "exit":
-            break
-
-
 def choose_mode():
     while True:
         print("\nAvailable modes:")
         print("1. chat    - Interactive chat mode")
         print("2. auto    - Autonomous action mode")
-        print("3. two-agent - AI-to-agent conversation mode")
 
         choice = input("\nChoose a mode (enter number or name): ").lower().strip()
 
         mode_map = {
             "1": "chat",
             "2": "auto",
-            "3": "two-agent",
             "chat": "chat",
             "auto": "auto",
-            "two-agent": "two-agent",
         }
 
         if choice in mode_map:
@@ -177,9 +116,8 @@ def main():
     mode = choose_mode()
 
     mode_functions = {
-        "chat": lambda: run_demo_loop(based_agent),
-        "auto": lambda: run_autonomous_loop(based_agent),
-        "two-agent": lambda: run_openai_conversation_loop(based_agent),
+        "chat": lambda: run_demo_loop(snarky),
+        "auto": lambda: run_autonomous_loop(snarky),
     }
 
     print(f"\nStarting {mode} mode...")
@@ -187,5 +125,5 @@ def main():
 
 
 if __name__ == "__main__":
-    print("Starting Based Agent...")
+    print("Waking up Snarky...")
     main()

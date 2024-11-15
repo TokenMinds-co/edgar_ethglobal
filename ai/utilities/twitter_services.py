@@ -1,5 +1,5 @@
 import os
-from twitter_bot import TwitterBot
+from utilities.twitter_bot import TwitterBot
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,7 +12,7 @@ TWITTER_ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
 TWITTER_ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 
 # Twitter Bot
-twitter_bot = TwitterBot(
+bot = TwitterBot(
     bearer_token=TWITTER_BEARER_TOKEN,
     api_key=TWITTER_API_KEY,
     api_secret=TWITTER_API_SECRET,
@@ -51,4 +51,4 @@ def post_to_twitter(content: str):
     Returns:
         str: Status message about the tweet
     """
-    return twitter_bot.post_tweet(content)
+    return bot.post_tweet(content)

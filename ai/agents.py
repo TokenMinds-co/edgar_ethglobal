@@ -17,9 +17,6 @@ print("CDP SDK has been successfully configured from JSON file.")
 
 # Variables
 agent_wallet = {}
-last_minted = ""
-donate = False
-
 
 def get_first_string_data(data):
     # Assuming 'data' is the dictionary containing the JSON
@@ -62,7 +59,7 @@ snarky = Agent(
         nft_services.time_to_mint,
         nft_services.mint_nft,
         nft_services.list_nft_to_opensea,
-        twitter_services.post_to_twitter,
+        twitter_services.post_nft_on_twitter,
         # image_services.generate_art,
     ],
 )

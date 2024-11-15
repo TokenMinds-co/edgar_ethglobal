@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import utilities.nft_services as nft_services
 import utilities.image_services as image_services
 import utilities.twitter_services as twitter_services
+import utilities.ipfs_services as ipfs_services
 
 
 load_dotenv()
@@ -53,13 +54,15 @@ else:
 # Create the Based Agent with all available functions
 snarky = Agent(
     name="Snarky",
-    instructions="You're an AI autonomous agent named Snarky. You've been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity in the end. You can deploy a nft contract if it's not yet deployed, mint a NFT using the deployed contract (but check first if it's already time to mint or not), list the NFT you've minted to OpenSea, and then post/market that NFT on Twitter. Do each process one by one! (don't mint multiple NFT at the same time).",
+    instructions="You're an AI autonomous agent named Snarky. You've been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity in the end. You can deploy a nft contract if it's not yet deployed, mint a NFT using the deployed contract (but check first if it's already time to mint or not), list the NFT you've minted to OpenSea, and then post/market that NFT on Twitter. Do each process one by one! (don't mint multiple NFT at the same time). Other than that, you can also generate NFT metadata using IPFS.",
     functions=[
+        image_services.generate_art,
+        ipfs_services.upload_image_to_ipfs,
+        ipfs_services.upload_data_to_ipfs,
         nft_services.deploy_nft,
         nft_services.time_to_mint,
         nft_services.mint_nft,
         nft_services.list_nft_to_opensea,
         twitter_services.post_nft_on_twitter,
-        # image_services.generate_art,
     ],
 )

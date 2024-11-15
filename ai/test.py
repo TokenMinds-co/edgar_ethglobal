@@ -1,12 +1,10 @@
-from datetime import datetime
 import os
 import json
-import requests
-from datetime import datetime
+from swarm import Agent
 from cdp import *
 from dotenv import load_dotenv
+import utilities.nft_services as nft_services
 
-url = "https://api.tatum.io/v3/ipfs"
 
 load_dotenv()
 
@@ -17,9 +15,6 @@ print("CDP SDK has been successfully configured from JSON file.")
 
 # Variables
 agent_wallet = {}
-last_minted = ""
-donate = False
-contract_address = "0x786fb80094b98438105d551F898bABE28533da2E"
 abi = [
 	{
 		"inputs": [
@@ -741,13 +736,9 @@ abi = [
 	}
 ]
 
-
 def get_first_string_data(data):
     # Assuming 'data' is the dictionary containing the JSON
     first_key = list(data.keys())[0]  # Get the first key in the dictionary
-    first_data = data[first_key]  # Access the first element's value
-    # print(first_data)
-    print(first_key)
     return first_key
 
 
@@ -756,81 +747,26 @@ if os.path.exists(wallet_data_path):
     # Load existing wallet data
     with open(wallet_data_path, "r") as file:
         wallet_dict = json.load(file)
-        print("Loaded existing wallet data.")
+        print("Loaded existing wallet data.\n")
         wallet_id = get_first_string_data(wallet_dict)
 
         agent_wallet = Wallet.fetch(wallet_id)
         agent_wallet.load_seed("wallet_seed.json")
-        print(agent_wallet.addresses)
+        # print(agent_wallet.addresses)
 else:
     # Create a new wallet and save it to the file
-    print("start")
+    print("Wallet not found, creating new walllet.\n")
     agent_wallet = Wallet.create(network_id="base-sepolia")
-    print(agent_wallet.addresses)
-    print("end")
+
     agent_wallet.save_seed("wallet_seed.json", encrypt=False)
     print("Created new wallet and saved data.")
 
     # Request faucet
     faucet = agent_wallet.faucet()
+    print(f"Requesting faucet..")
     print(f"Faucet transaction: {faucet}")
     print(f"Agent wallet address: {agent_wallet.default_address.address_id}")
 
-
-# Variables
-nft_contract = ""
-last_minted = None
-
-
-# Function to check if it's already time to mint NFT
-def time_to_mint():
-    """
-    Check if it's already time to mint another NFT
-
-    Returns:
-        bool: True if it's already time to mint, othwerwise False
-    """
-
-    global last_minted
-
-    # Return True if last_minted is empty (i.e., no previous mint)
-    if not last_minted:
-        return True
-
-    current_time = datetime.now().timestamp()
-
-    # Check if 60 seconds (1 minute) has passed since last mint
-    if current_time - last_minted >= 60:
-        return True
-
-    return False
-
-
-# Function to deploy an ERC-721 NFT contract
-def deploy_nft(name, symbol, base_uri):
-    """
-    Deploy an ERC-721 NFT contract.
-
-    Args:
-        name (str): Name of the NFT collection
-        symbol (str): Symbol of the NFT collection
-        base_uri (str): Base URI for token metadata
-
-    Returns:
-        str: Status message about the NFT deployment, including the contract address
-    """
-    try:
-        deployed_nft = agent_wallet.deploy_nft(name, symbol, base_uri)
-        deployed_nft.wait()
-        contract_address = deployed_nft.contract_address
-
-        return f"Successfully deployed NFT contract '{name}' ({symbol}) at address {contract_address} with base URI: {base_uri}"
-
-    except Exception as e:
-        return f"Error deploying NFT contract: {str(e)}"
-
-    
-# Function to mint an NFT
 
 # Function to mint an NFT
 def mint_nft(mint_to, uri):
@@ -846,9 +782,10 @@ def mint_nft(mint_to, uri):
     """
     try:
         mint_args = {"to": mint_to, "uri": uri}
+        print(mint_args)
 
         mint_invocation = agent_wallet.invoke_contract(
-            contract_address, "safeMint", abi, mint_args, None, None
+            "0x786fb80094b98438105d551F898bABE28533da2E", "safeMint", abi, mint_args, None, None
         )
         mint_invocation.wait()
 
@@ -856,50 +793,6 @@ def mint_nft(mint_to, uri):
 
     except Exception as e:
         return f"Error minting NFT: {str(e)}"
-
-
-def list_nft_to_opensea(nftName):
-    """
-    List NFT on OpenSea
-
-    Args:
-        nftName (str):Name of the NFT that want to be listed
-
-    Returns:
-        str: Status message about the listed NFT
-    """
-    try:
-
-        return f"Successfully list NFT {nftName}"
-
-    except Exception as e:
-        return f"Error list NFT: {nftName}"
-
-
-def mint_one_nft(to):
-    """
-    Mint one NFT to the specified address.
-
-    Args:
-        to (str): Address to mint NFT to
-
-    Returns:
-        str: Status message about the NFT minting
-    """
-    try:
-        contract_address = "0x2cba0128c24c80a7b1c72303dc70e4b4a6211d5b"
-
-        mint_args = {"to": to, "quantity": "1"}
-
-        mint_invocation = agent_wallet.invoke_contract(
-            contract_address=contract_address, method="mint", args=mint_args
-        )
-        mint_invocation.wait()
-        
-        return f"Successfully minted NFT to {to}"
-    
-    except Exception as e:
-        return f"Error minting NFT: {str(e)}"
     
 
-
+print(mint_nft("0xb7f677a807a4398015071cc03de1f29a7a046844", "ipfs://QmNgQ1n14vMrLAefwnN2z94P6zJzByLcLCah6ooR99bjJ5"))

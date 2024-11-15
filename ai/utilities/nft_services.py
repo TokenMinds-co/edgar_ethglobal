@@ -1,7 +1,6 @@
 from datetime import datetime
 import os
 import json
-import requests
 from datetime import datetime
 from cdp import *
 from dotenv import load_dotenv
@@ -836,13 +835,13 @@ def deploy_nft(name, symbol, base_uri):
 # Function to mint an NFT
 
 # Function to mint an NFT
-def mint_nft(mint_to, ipfs_hash):
+def mint_nft(ipfs_hash, mint_to = agent_wallet.addresses):
     """
     Mint an NFT to a specified address.
 
     Args:
-        mint_to (str): Address to mint NFT to
         ipfs_hash (str): IPFS hash of the NFT metadata
+        mint_to (str): Address to mint NFT to
 
     Returns:
         str: Status message about the NFT minting

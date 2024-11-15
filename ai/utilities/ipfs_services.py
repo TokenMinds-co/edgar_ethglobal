@@ -33,7 +33,6 @@ def upload_file_to_ipfs():
     }
     response = requests.post(url, files=files, headers=headers)
     data = response.json()
-    print(data)
 
     # delete the file
     os.remove("data.json")

@@ -5,7 +5,7 @@ from swarm import Agent
 from cdp import *
 from dotenv import load_dotenv
 
-import services_image
+import ai.utilities.image_services as image_services
 
 load_dotenv()
 
@@ -18,6 +18,7 @@ print("CDP SDK has been successfully configured from JSON file.")
 agent_wallet = {}
 last_minted = ""
 donate = False
+
 
 def get_first_string_data(data):
     # Assuming 'data' is the dictionary containing the JSON
@@ -59,6 +60,6 @@ based_agent = Agent(
     name="Snarky",
     instructions="You're an AI autonomous agent that has been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity in the end. Do the process one by one (don't mint multiple NFT at the same time). Do each process one by one!",
     functions=[
-      services_image.generate_art,
-    ]
+        image_services.generate_art,
+    ],
 )

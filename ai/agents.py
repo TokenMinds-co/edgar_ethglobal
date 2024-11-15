@@ -5,6 +5,8 @@ from swarm import Agent
 from cdp import *
 from dotenv import load_dotenv
 
+import services_image
+
 load_dotenv()
 
 # Configure CDP with environment variables
@@ -56,4 +58,7 @@ else:
 based_agent = Agent(
     name="Snarky",
     instructions="You're an AI autonomous agent that has been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity in the end. Do the process one by one (don't mint multiple NFT at the same time). Do each process one by one!",
+    functions=[
+      services_image.generate_art,
+    ]
 )

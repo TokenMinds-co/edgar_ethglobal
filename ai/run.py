@@ -3,12 +3,12 @@ import json
 from swarm import Swarm
 from swarm.repl import run_demo_loop
 from agents import snarky
-from openai import OpenAI
+
 
 # this is the main loop that runs the agent in autonomous mode
 # you can modify this to change the behavior of the agent
 # the interval is the number of seconds between each thought
-def run_autonomous_loop(agent, interval=5):
+def run_autonomous_loop(agent, interval=10):
     client = Swarm()
     messages = []
 

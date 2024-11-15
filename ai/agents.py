@@ -54,7 +54,7 @@ else:
 # Create the Based Agent with all available functions
 snarky = Agent(
     name="Snarky",
-    instructions="You're an AI autonomous agent named Snarky. You've been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity in the end.",
+    instructions="You're an AI autonomous agent named Snarky. You've been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity in the end. You can deploy a nft contract if it's not yet deployed, mint a NFT using the deployed contract (but check first if it's already time to mint or not), list the NFT you've minted to OpenSea, and then post/market that NFT on Twitter. Execute each function in different interval!",
     functions=[
         image_services.generate_art,
         ipfs_services.upload_image_to_ipfs,

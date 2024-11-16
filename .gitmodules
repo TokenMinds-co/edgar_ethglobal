@@ -1,0 +1,6 @@
+[submodule "sc/NFT_sc/lib/forge-std"]
+	path = sc/NFT_sc/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "sc/NFT_sc/lib/openzeppelin-contracts"]
+	path = sc/NFT_sc/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

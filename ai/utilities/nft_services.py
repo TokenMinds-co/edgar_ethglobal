@@ -20,7 +20,7 @@ agent_wallet = {}
 last_minted = ""
 donate = False
 base_blockscout = "https://base-sepolia.blockscout.com"
-contract_address = "0x786fb80094b98438105d551F898bABE28533da2E"
+contract_address = os.getenv("NFT_CONTRACT_ADDRESS")
 abi = [
     {
         "inputs": [
@@ -523,6 +523,7 @@ def time_to_mint():
 
     return False
 
+
 # Cratea a function to get the last string of the path py / charcters
 def get_last_string(path):
     """
@@ -534,14 +535,13 @@ def get_last_string(path):
     Returns:
     str: The last string of the path
     """
-    
+
     try:
-      # Call the function and print the result
-      return path.split("/")[-1].split(" ")[0]
-    
+        # Call the function and print the result
+        return path.split("/")[-1].split(" ")[0]
+
     except Exception as e:
         print(f"Error deploying NFT contract: {str(e)}")
-
 
 
 # Function to deploy an ERC-721 NFT contract
@@ -561,7 +561,6 @@ def deploy_nft(name, symbol, base_uri):
         deployed_nft = agent_wallet.deploy_nft(name, symbol, base_uri)
         deployed_nft.wait()
         contract_address = deployed_nft.contract_address
-
 
         print(f"Deploy NFT successfully, tx hash", deployed_nft.transaction_hash)
         return f"Successfully deployed NFT contract '{name}' ({symbol}) at address {contract_address} with base URI: {base_uri}"
@@ -591,7 +590,9 @@ def mint_nft(ipfs_hash, mint_to=agent_wallet.addresses[0].address_id):
         mint_invocation.wait()
         increment_nft_count()
 
-        print(f"Mint successfully, tx hash {base_blockscout}/tx/{mint_invocation.transaction_hash})")
+        print(
+            f"Mint successfully, tx hash {base_blockscout}/tx/{mint_invocation.transaction_hash})"
+        )
         return f"Successfully minted NFT to {mint_to}. You can check the transacation status on ${base_blockscout}/tx/{mint_invocation.transaction_hash}"
 
     except Exception as e:

@@ -4,11 +4,10 @@ import json
 from datetime import datetime
 from cdp import *
 from dotenv import load_dotenv
+load_dotenv()
 
 
 url = "https://api.tatum.io/v3/ipfs"
-
-load_dotenv()
 
 # Configure CDP with environment variables
 Cdp.configure_from_json("cdp_api_key.json")
@@ -852,6 +851,7 @@ def mint_nft(ipfs_hash, mint_to = agent_wallet.addresses[0].address_id):
             contract_address, "safeMint", abi, mint_args, None, None
         )
         mint_invocation.wait()
+        increment_nft_count()
 
         return f"Successfully minted NFT to {mint_to}"
 
@@ -870,37 +870,35 @@ def list_nft_to_opensea(nftName):
         str: Status message about the listed NFT
     """
     try:
-
-        return f"Successfully list NFT {nftName}"
+        current = get_total_nft_count()
+        return f"Successfully list NFT https://testnets.opensea.io/assets/base-sepolia/0x786fb80094b98438105d551f898babe28533da2e/{current}"
 
     except Exception as e:
-        return f"Error list NFT: {nftName}"
-
-
-def mint_one_nft(to):
-    """
-    Mint one NFT to the specified address.
-
-    Args:
-        to (str): Address to mint NFT to
-
-    Returns:
-        str: Status message about the NFT minting
-    """
+        return f"Error listing NFT: {nftName}"
+    
+def get_total_nft_count():
     try:
-        contract_address = "0x2cba0128c24c80a7b1c72303dc70e4b4a6211d5b"
-
-        mint_args = {"to": to, "quantity": "1"}
-
-        mint_invocation = agent_wallet.invoke_contract(
-            contract_address=contract_address, method="mint", args=mint_args
-        )
-        mint_invocation.wait()
-        
-        return f"Successfully minted NFT to {to}"
+        with open("nft_count.json", 'r') as file:
+            data = json.load(file)
+        return data["count"]
     
     except Exception as e:
-        return f"Error minting NFT: {str(e)}"
+        return f"Error reading nft count"
     
-
-
+def increment_nft_count():
+    try:
+        with open("nft_count.json", 'r') as file:
+            data = json.load(file)
+        
+        # Increment the count
+        data["count"] += 1
+        
+        # Save the updated JSON back to the file
+        with open("nft_count.json", 'w') as file:
+            json.dump(data, file, indent=4)
+        
+        print("Count incremented successfully.")
+    except Exception as e:
+        print(f"Error updating nft count: {e}")
+    
+print(get_total_nft_count())

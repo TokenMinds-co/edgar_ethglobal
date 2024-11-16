@@ -94,6 +94,3 @@ def delete_twitter_post(tweetId: str):
     except tweepy.TweepyException as e:
         print(f"{str(e)}")
         return f"Error posting tweet: {str(e)}"
-
-
-print(count_post_like("1857727722723950717"))

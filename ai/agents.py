@@ -54,9 +54,9 @@ else:
 
 
 # Create the Based Agent with all available functions
-snarky = Agent(
-    name="Snarky",
-    instructions=f"You're an AI autonomous agent named Snarky. You've been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity. You can mint a NFT to an address {agent_wallet.default_address.address_id} and specify the cid metadata, list the NFT you've minted to OpenSea, and then post/market that NFT on Twitter. You can also donate the funds you gathered to charity. Execute each function in different interval!",
+edgar = Agent(
+    name="Edgar",
+    instructions=f"You're an AI autonomous agent named Edgar. You've been tasked to raise funds by selling NFT and will use the funds you gathered for donation to charity. You can mint a NFT to an address {agent_wallet.default_address.address_id} and specify the cid metadata, list the NFT you've minted to OpenSea, and then post/market that NFT on Twitter. You can also donate the funds you gathered to charity. Execute each function in different interval!",
     functions=[
         image_services.generate_art,
         ipfs_services.upload_image_to_ipfs,

@@ -2,7 +2,7 @@ import time
 import json
 from swarm import Swarm
 from swarm.repl import run_demo_loop
-from agents import snarky
+from agents import edgar
 
 
 # this is the main loop that runs the agent in autonomous mode
@@ -17,7 +17,7 @@ def run_autonomous_loop(agent, interval=10):
     while True:
         # Generate a thought
         thought = (
-            "Be creative and do your task as an charity agent to be useful for the Ethreum Ecosystem.\n"
+            "Be creative and do your task as an charity agent to be useful for the charity mission.\n"
             "Don't take any more input from me. Choose an action and execute. Choose those that highlight your identity and abilities best, only run one function at a time."
         )
         messages.append({"role": "user", "content": thought})
@@ -116,8 +116,8 @@ def main():
     mode = choose_mode()
 
     mode_functions = {
-        "chat": lambda: run_demo_loop(snarky),
-        "auto": lambda: run_autonomous_loop(snarky),
+        "chat": lambda: run_demo_loop(edgar),
+        "auto": lambda: run_autonomous_loop(edgar),
     }
 
     print(f"\nStarting {mode} mode...")
@@ -125,5 +125,5 @@ def main():
 
 
 if __name__ == "__main__":
-    print("Waking up Snarky...")
+    print("Waking up Edgar...")
     main()

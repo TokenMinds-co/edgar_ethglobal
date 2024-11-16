@@ -1,6 +1,7 @@
 import os
 import tweepy
 from dotenv import load_dotenv
+import time
 
 load_dotenv(override=True)
 
@@ -10,9 +11,6 @@ TWITTER_API_KEY = os.getenv("TWITTER_API_KEY")
 TWITTER_API_SECRET = os.getenv("TWITTER_API_SECRET")
 TWITTER_ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN")
 TWITTER_ACCESS_TOKEN_SECRET = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-print("Open", OPENAI_API_KEY)
-
 
 client = tweepy.Client(
     bearer_token=TWITTER_BEARER_TOKEN,
@@ -35,6 +33,9 @@ def post_nft_on_twitter(nftName):
         str: Status message about the created post
     """
     try:
+        print(f"Posting NFT {nftName} on Twitter")
+        print("Sleeping for 60 seconds before execute new cycle")
+        time.sleep(60)
 
         return f"Successfully post/market NFT {nftName}"
 

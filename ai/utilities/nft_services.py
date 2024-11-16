@@ -5,6 +5,7 @@ from datetime import datetime
 from cdp import *
 from dotenv import load_dotenv
 
+
 url = "https://api.tatum.io/v3/ipfs"
 
 load_dotenv()
@@ -831,8 +832,6 @@ def deploy_nft(name, symbol, base_uri):
     except Exception as e:
         return f"Error deploying NFT contract: {str(e)}"
 
-    
-# Function to mint an NFT
 
 # Function to mint an NFT
 def mint_nft(ipfs_hash, mint_to = agent_wallet.addresses[0].address_id):

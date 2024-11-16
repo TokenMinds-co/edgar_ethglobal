@@ -523,9 +523,25 @@ def time_to_mint():
 
     return False
 
+# Cratea a function to get the last string of the path py / charcters
+def get_last_string(path):
+    """
+    Get the last string of the path by / characters and make sure to remove the space
 
-def remove_ipfs_prefix(text):
-    return text.replace("ipfs://", "")
+    Args:
+    path (str): The path that you want to get the last string
+
+    Returns:
+    str: The last string of the path
+    """
+    
+    try:
+      # Call the function and print the result
+      return path.split("/")[-1].split(" ")[0]
+    
+    except Exception as e:
+        print(f"Error deploying NFT contract: {str(e)}")
+
 
 
 # Function to deploy an ERC-721 NFT contract
@@ -567,7 +583,7 @@ def mint_nft(ipfs_hash, mint_to=agent_wallet.addresses[0].address_id):
         str: Status message about the NFT minting
     """
     try:
-        mint_args = {"to": mint_to, "uri": "ipfs://" + remove_ipfs_prefix(ipfs_hash)}
+        mint_args = {"to": mint_to, "uri": "ipfs://" + get_last_string(ipfs_hash)}
 
         mint_invocation = agent_wallet.invoke_contract(
             contract_address, "safeMint", abi, mint_args, None, None

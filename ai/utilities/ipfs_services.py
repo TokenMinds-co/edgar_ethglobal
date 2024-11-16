@@ -15,8 +15,24 @@ def extract_image_link(text):
     match = re.search(url_pattern, text)
     return match.group(0) if match else None
 
-def remove_ipfs_prefix(text):
-    return text.replace("ipfs://", "")
+# Cratea a function to get the last string of the path py / charcters
+def get_last_string(path):
+    """
+    Get the last string of the path by / characters and make sure to remove the space
+
+    Args:
+    path (str): The path that you want to get the last string
+
+    Returns:
+    str: The last string of the path
+    """
+    
+    try:
+      # Call the function and print the result
+      return path.split("/")[-1].split(" ")[0]
+    
+    except Exception as e:
+        print(f"Error deploying NFT contract: {str(e)}")
 
 
 def upload_file_to_ipfs():
@@ -55,7 +71,7 @@ def upload_data_to_ipfs(name, description, image):
     data = {
         "name": name,
         "description": description,
-        "image": "ipfs://" + remove_ipfs_prefix(image)
+        "image": "ipfs://" + get_last_string(image)
     }
 
     # save data to a file data.json

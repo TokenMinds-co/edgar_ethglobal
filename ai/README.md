@@ -2,14 +2,13 @@
 
 ## AI Agent for Charity
 
-Autonomous AI agent that utilizes NFTs raise funds for the
-Ethereum foundation
+Autonomous AI agent that utilizes NFTs to raise funds for charity
 
 ### How it works
 
 Edgar will keep launch and promoting new NFT collections until it finds one that people buy and then expands on that collection until 7,000 is reach after which is finds a new NFT collection that sells.
 
-Once Edgar finds a NFT collection/lore that sells it expand on that until 7k NFTs is reached, after which is will go back to the Super Cycle to find a new collection that sells well.
+Once Edgar finds a NFT collection/lore that sells, it expand on that until 7k NFTs is reached, after which is will go back to the Super Cycle to find a new collection that sells well.
 
 ### How to run
 

@@ -23,7 +23,7 @@ client = tweepy.Client(
 
 
 # Test function to post listed NFT on Twitter => LET'S USE THIS ONE FOR TESTING
-def post_nft_on_twitter(content:str):
+def post_nft_on_twitter(content: str):
     """
     Market/Post NFT on X-Account
 
@@ -35,23 +35,26 @@ def post_nft_on_twitter(content:str):
         print(f"Posting NFT on Twitter...")
 
         tweet = client.create_tweet(text=content)
-        tweet_id = tweet.data['id']
+        tweet_id = tweet.data["id"]
 
         print(f"Successfully posted tweet: {tweet.data}")
-       
-        print("Sleeping for 60 then check tweet performance")
+
+        print("Sleeping for a day then check tweet performance")
+        # 60 secs for demo purpose, should be longer such as 1 day
         time.sleep(60)
-        
+
         totalLikes = count_post_like(tweet_id)
-        if(totalLikes > 1):
+        if totalLikes > 1:
             return f"Lore is good, continue to mint NFT using this lore"
         else:
-            print (f"Lore is bad, redeploy to create new lore")
+            delete_twitter_post(tweet_id)
+            print(f"Lore is bad, delete prev post & redeploy to create new lore")
             sys.exit()
 
     except tweepy.TweepyException as e:
         print(f"{str(e)}")
         return f"Error posting NFT on tweet: {str(e)}"
+
 
 # Check Twitter Post Like
 def count_post_like(tweetId: str):
@@ -68,7 +71,7 @@ def count_post_like(tweetId: str):
         tweet = client.get_liking_users(id=tweetId, user_auth=True)
         print(tweet)
         likingUsers = tweet.data
-        if (not likingUsers):
+        if not likingUsers:
             return 0
         return len(likingUsers)
 
@@ -76,6 +79,7 @@ def count_post_like(tweetId: str):
         print(f"{str(e)}")
         # delete_twitter_post(tweetId)
         return 0
+
 
 # Real Function to post on Twitter
 def delete_twitter_post(tweetId: str):

@@ -1,4 +1,3 @@
-import os
 from openai import OpenAI
 from dotenv import load_dotenv
 import utilities.lore_services as lore_services
@@ -6,6 +5,7 @@ import utilities.lore_services as lore_services
 load_dotenv(override=True)
 
 savedLore = None
+goodLore = True
 client = OpenAI()
 
 # Function to generate art using DALL-E (requires separate OpenAI API key)
@@ -20,7 +20,11 @@ def generate_art():
     try:
         global savedLore
         if savedLore:
-            lore = lore_services.generate_new_lore()
+            if(goodLore == True):
+                lore = savedLore
+            else:
+                lore = lore_services.generate_new_lore()
+          
         else:
             lore = lore_services.generate_lore()
 
@@ -34,7 +38,7 @@ def generate_art():
         )
 
 
-        # savedLore = lore
+        savedLore = lore
         image_url = response.data[0].url
         return f"Generated artwork available at: {image_url}"
 

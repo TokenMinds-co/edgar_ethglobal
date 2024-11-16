@@ -97,8 +97,10 @@ def list_nft_to_opensea():
     
     payload = {
         "parameters": params,
-        "signature": agent_wallet.sign_payload("0xe2b143ff3c2965cdb3a6f40148217e009d34212c9fb3d73ab3ac7ef347615925")
+        "signature": agent_wallet.sign_payload("0x55a211e94b21c6046f80d755829100b4fd048693d1cd65ce8639c33312b689b5").signature
     }
+
+    print("Payload:", payload)
     
     # Make the API request
     headers = {

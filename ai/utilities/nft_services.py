@@ -18,6 +18,7 @@ print("CDP SDK has been successfully configured from JSON file.")
 agent_wallet = {}
 last_minted = ""
 donate = False
+base_blockscout = "https://base-sepolia.blockscout.com"
 contract_address = "0x786fb80094b98438105d551F898bABE28533da2E"
 abi = [
 	{
@@ -826,6 +827,8 @@ def deploy_nft(name, symbol, base_uri):
         deployed_nft.wait()
         contract_address = deployed_nft.contract_address
 
+
+        print(f"Deploy NFT successfully, tx hash", deployed_nft.transaction_hash)
         return f"Successfully deployed NFT contract '{name}' ({symbol}) at address {contract_address} with base URI: {base_uri}"
 
     except Exception as e:
@@ -853,7 +856,8 @@ def mint_nft(ipfs_hash, mint_to = agent_wallet.addresses[0].address_id):
         mint_invocation.wait()
         increment_nft_count()
 
-        return f"Successfully minted NFT to {mint_to}"
+        print(f"Mint successfully, tx hash {base_blockscout}/tx/{mint_invocation.transaction_hash})")
+        return f"Successfully minted NFT to {mint_to}. You can check the transacation status on ${base_blockscout}/tx/{mint_invocation.transaction_hash}"
 
     except Exception as e:
         return f"Error minting NFT: {str(e)}"

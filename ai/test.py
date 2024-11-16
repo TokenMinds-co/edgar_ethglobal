@@ -795,4 +795,4 @@ def mint_nft(mint_to, uri):
         return f"Error minting NFT: {str(e)}"
     
 
-print(mint_nft("0xb7f677a807a4398015071cc03de1f29a7a046844", "ipfs://QmNgQ1n14vMrLAefwnN2z94P6zJzByLcLCah6ooR99bjJ5"))
+print(f"Helloo askasdnansdsad {agent_wallet.default_address.address_id}")

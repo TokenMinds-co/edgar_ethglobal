@@ -17,7 +17,7 @@ def run_autonomous_loop(agent, interval=10):
     while True:
         # Generate a thought
         thought = (
-            "Be creative and do your task as an charity agent to be useful for humankind.\n"
+            "Be creative and do your task as an charity agent to be useful for the Ethreum Ecosystem.\n"
             "Don't take any more input from me. Choose an action and execute. Choose those that highlight your identity and abilities best, only run single function at a time."
         )
         messages.append({"role": "user", "content": thought})

@@ -835,7 +835,7 @@ def deploy_nft(name, symbol, base_uri):
 # Function to mint an NFT
 
 # Function to mint an NFT
-def mint_nft(ipfs_hash, mint_to = agent_wallet.addresses):
+def mint_nft(ipfs_hash, mint_to = agent_wallet.addresses[0].address_id):
     """
     Mint an NFT to a specified address.
 

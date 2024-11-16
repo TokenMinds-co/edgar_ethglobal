@@ -68,12 +68,14 @@ def count_post_like(tweetId: str):
         tweet = client.get_liking_users(id=tweetId, user_auth=True)
         print(tweet)
         likingUsers = tweet.data
+        if (not likingUsers):
+            return 0
         return len(likingUsers)
 
     except tweepy.TweepyException as e:
         print(f"{str(e)}")
-        delete_twitter_post(tweetId)
-        return f"Error posting tweet: {str(e)}"
+        # delete_twitter_post(tweetId)
+        return 0
 
 # Real Function to post on Twitter
 def delete_twitter_post(tweetId: str):

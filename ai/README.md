@@ -14,10 +14,17 @@ Once Edgar finds a NFT collection/lore that sells, it expand on that until 7k NF
 
 1. Clone the repo
 2. Copy the `.env.example` file to `.env` and fill in the required values
-3. Run `cmd + shift + p` and select `Python: Create environment` then select your Python version and wait for the environment to be created
-4. Install the required packages with `pip3 install -r requirements.txt`
-5. Run with `python3 run.py`
-6. Choose 1 to start with chat mode or 2 to start with autonomous mode
+3. Create a file with a name cdp_api_key.json and fill your CDP credentials here
+```
+{
+  "name": "",
+  "privateKey": ""
+}
+```
+4. Run `cmd + shift + p` and select `Python: Create environment` then select your Python version and wait for the environment to be created
+5. Install the required packages with `pip3 install -r requirements.txt`
+6. Run with `python3 run.py`
+7. Choose 1 to start with chat mode or 2 to start with autonomous mode
 
 ### Screenshots
 

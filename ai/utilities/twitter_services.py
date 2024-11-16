@@ -2,6 +2,7 @@ import os
 import tweepy
 from dotenv import load_dotenv
 import time
+import sys
 
 load_dotenv(override=True)
 
@@ -29,36 +30,64 @@ def post_nft_on_twitter(content:str):
     Args:
         content (str):Content about the NFT to post
 
-    Returns:
-        str: Status message about the created post
     """
     try:
         print(f"Posting NFT on Twitter...")
+
         tweet = client.create_tweet(text=content)
+        tweet_id = tweet.data.id
+
+        print(f"Successfully posted tweet: {tweet.data}")
        
-        print("Sleeping for 60 seconds before execute new cycle")
+        print("Sleeping for 60 then check tweet performance")
         time.sleep(60)
         
-        return f"Successfully posted tweet: {tweet.data}"
+        totalLikes = count_post_like(tweet_id)
+        if(totalLikes > 1):
+            return f"Lore is good, continue to mint NFT using this lore"
+        else:
+            print (f"Lore is bad, redeploy to create new lore")
+            sys.exit()
 
     except tweepy.TweepyException as e:
         print(f"{str(e)}")
         return f"Error posting NFT on tweet: {str(e)}"
 
-# Real Function to post on Twitter
-def post_to_twitter(content: str):
+# Check Twitter Post Like
+def count_post_like(tweetId: str):
     """
-    Post a message to Twitter.
+    Check number of likes for a specific tweet/post
 
     Args:
-        content (str): The content to tweet
+        tweetId (str): id of the post to be checked
+
+    Returns:
+        int: amount of likes
+    """
+    try:
+        tweet = client.get_liking_users(id=tweetId)
+        likingUsers = tweet.data
+        return len(likingUsers)
+
+    except tweepy.TweepyException as e:
+        print(f"{str(e)}")
+        delete_twitter_post(tweetId)
+        return f"Error posting tweet: {str(e)}"
+
+# Real Function to post on Twitter
+def delete_twitter_post(tweetId: str):
+    """
+    Delete a post on twitter
+
+    Args:
+        tweetId (str): id of the post to be deleted
 
     Returns:
         str: Status message about the tweet
     """
     try:
 
-        tweet = client.create_tweet(text=content)
+        tweet = client.delete_tweet(id=tweetId)
         return f"Successfully posted tweet: {tweet.data}"
 
     except tweepy.TweepyException as e:

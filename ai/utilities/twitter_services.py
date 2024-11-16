@@ -35,7 +35,7 @@ def post_nft_on_twitter(content:str):
         print(f"Posting NFT on Twitter...")
 
         tweet = client.create_tweet(text=content)
-        tweet_id = tweet.data.id
+        tweet_id = tweet.data['id']
 
         print(f"Successfully posted tweet: {tweet.data}")
        
@@ -65,7 +65,8 @@ def count_post_like(tweetId: str):
         int: amount of likes
     """
     try:
-        tweet = client.get_liking_users(id=tweetId)
+        tweet = client.get_liking_users(id=tweetId, user_auth=True)
+        print(tweet)
         likingUsers = tweet.data
         return len(likingUsers)
 
@@ -93,3 +94,6 @@ def delete_twitter_post(tweetId: str):
     except tweepy.TweepyException as e:
         print(f"{str(e)}")
         return f"Error posting tweet: {str(e)}"
+
+
+print(count_post_like("1857727722723950717"))

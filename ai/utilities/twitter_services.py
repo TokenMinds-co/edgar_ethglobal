@@ -22,26 +22,28 @@ client = tweepy.Client(
 
 
 # Test function to post listed NFT on Twitter => LET'S USE THIS ONE FOR TESTING
-def post_nft_on_twitter(nftName):
+def post_nft_on_twitter(content:str):
     """
     Market/Post NFT on X-Account
 
     Args:
-        nftName (str):Name of the NFT that want to be posted/marketed
+        content (str):Content about the NFT to post
 
     Returns:
         str: Status message about the created post
     """
     try:
-        print(f"Posting NFT {nftName} on Twitter")
+        print(f"Posting NFT on Twitter...")
+        tweet = client.create_tweet(text=content)
+       
         print("Sleeping for 60 seconds before execute new cycle")
         time.sleep(60)
+        
+        return f"Successfully posted tweet: {tweet.data}"
 
-        return f"Successfully post/market NFT {nftName}"
-
-    except Exception as e:
-        return f"Error post NFT: {nftName}"
-
+    except tweepy.TweepyException as e:
+        print(f"{str(e)}")
+        return f"Error posting NFT on tweet: {str(e)}"
 
 # Real Function to post on Twitter
 def post_to_twitter(content: str):
